@@ -3,13 +3,13 @@ import  os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+#TODO Change Your SECRET_KEY. SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-py$39if+#a&(fa9&247132o2p6fxgy#*2b(a%tr^%q*e)3u=1u'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+#TODO Change To False If you deploy SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['*']
+#TODO Add your server ip before you deploy or vim edite this settings after you push in server/ Mine Is '188.166.234.99','2400:6180:0:d0::111c:e001'
+ALLOWED_HOSTS = ['188.166.234.99','2400:6180:0:d0::111c:e001','127.0.0.1','localhost','[::1]']
 
 
 # Application definition
@@ -76,14 +76,25 @@ WSGI_APPLICATION = 'ash999.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
-
+if not DEBUG:
+# For Deployment
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'yourProject',
+            'USER': 'yourUserName',
+            'PASSWORD': 'yourPassword',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -106,32 +117,28 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
-
+#Define Your Auth Model
 AUTH_USER_MODEL = 'account.User'
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [ BASE_DIR / 'static' ]
-# STATIC_ROOT = 'static'
+# Add Below If You Need
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static/'),]
+if not DEBUG: 
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+# Just want BigAutoField
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+#Just prefer below Time Formats
 TIME_FORMAT = '%d-%m-%Y %H:%M:%S'
 DATE_TIME_FORMAT = '%d-%m-%Y'
