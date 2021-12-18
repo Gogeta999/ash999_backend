@@ -53,8 +53,7 @@ class Query(graphene.ObjectType):
 
     def resolve_all_categories(root, info):
         # We can easily optimize query count in the resolve method
-        return Category.objects.all()
-
+        return Category.objects.filter(is_enable=True).all()
     def resolve_categories_by_name(root, info, search=None, first=None, skip=None, **kwargs):
         queryset = Category.objects.all()
         if search:
